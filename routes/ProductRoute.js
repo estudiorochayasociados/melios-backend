@@ -9,6 +9,24 @@ router.get("/update-products-with-web", async (req, res) => {
     res.send(get);
 })
 
+router.get('/products-set-meli', async (req, res) => {
+    const products = await ProductController.list();
+    products.forEach(element => {
+        var gold_pro = element.mercadolibre.findIndex(x => x.type === "gold_pro");
+        var gold_special = element.mercadolibre.findIndex(
+            x => x.type === "gold_special"
+        );
+        const meli = [];
+        if (element.mercadolibre[gold_pro] != undefined) {
+            meli.push(element.mercadolibre[gold_pro]);
+        }
+        if (element.mercadolibre[gold_special] != undefined) {
+            meli.push(element.mercadolibre[gold_special]);
+        }
+        element.mercadolibre = meli;
+        ProductController.update(element);
+    });
+})
 
 router.post("/update-web", Middelware.checkToken, async (req, res) => {
     const get = await ProductController.updateWeb(req.body.item);

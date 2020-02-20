@@ -135,8 +135,8 @@ exports.addItem = async (data, addShipping, percentPrice, type, garanty, token) 
     itemMeli.price = ((data.price.default * (percentPrice / 100) + data.price.default) + shipping).toFixed(2);
     itemMeli.description = { plain_text: data.description.text };
     itemMeli.pictures = [];
-    itemMeli.attributes = [];
-    itemMeli.attributes.push({ "id": "EAN", "name": "EAN", "value_id": null, "value_name": "7794940000796" });
+    // itemMeli.attributes = [];
+    // itemMeli.attributes.push({ "id": "EAN", "name": "EAN", "value_id": null, "value_name": "7794940000796" });
     data.images.forEach(img => {
         itemMeli.pictures.push({ source: img.source });
     });
@@ -183,11 +183,15 @@ exports.editItem = async (itemId, data, addShipping, percentPrice, type, token) 
         itemMeli.price = ((data.price.default * (percentPrice / 100) + data.price.default) + shipping).toFixed(2);
         itemMeli.video_id = data.description.video;
         itemMeli.pictures = [];
-        itemMeli.attributes = [];
-        itemMeli.attributes.push({ "id": "EAN", "name": "EAN", "value_id": null, "value_name": "7794940000796" });
+        // itemMeli.attributes = [];
+        // itemMeli.attributes.push({ "id": "EAN", "name": "EAN", "value_id": null, "value_name": "7794940000796" });
         data.images.forEach(img => {
             itemMeli.pictures.push({ source: img.source });
         });
+
+        //CREATE OBJETO MELI
+        const descriptionMeli = {};
+        descriptionMeli.plain_text = data.description.text;
 
         // SET MANUFACTURING_TIME
         // if (garantyDays != 0) {
@@ -199,6 +203,7 @@ exports.editItem = async (itemId, data, addShipping, percentPrice, type, token) 
 
         try {
             const itemPost = await axios.put("https://api.mercadolibre.com/items/" + itemId + "?access_token=" + token, itemMeli);
+            const descriptionPost = await axios.put("https://api.mercadolibre.com/items/" + itemId + "/description?access_token=" + token, descriptionMeli);
             const findMongoDb = await ProductsModel.findOne({ "code.web": data.code.web });
             indexMeliObject = await findMongoDb.mercadolibre.findIndex(x => x.code === itemId);
             await findMongoDb.mercadolibre.splice(indexMeliObject, 1);

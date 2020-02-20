@@ -1,6 +1,6 @@
 const axios = require('axios');
 const ProductsModel = require('../model/ProductModel');
-const { removeSpecialChars } = require('../controller/HelpersController');
+//const { removeSpecialChars } = require('../controller/HelpersController');
 
 exports.updateProductsWithWeb = async (link) => {
     var add = [];
@@ -10,18 +10,18 @@ exports.updateProductsWithWeb = async (link) => {
     return axios.get(link)
         .then(async r => {
             for await (const item of r.data) {
-                var itemSearch = await this.view(item.data.cod_producto);
+                var itemSearch = await this.view(item.data.cod);
                 if (itemSearch) {
                     const images = [];
-                    itemSearch.title = removeSpecialChars(item.data.titulo);
+                    itemSearch.title = item.data.titulo;
                     itemSearch.description.text = item.data.desarrollo;
                     itemSearch.description.video = (item.data.video) ? item.data.video : process.env.VIDEO_ITEM;
-                    itemSearch.stock = (item.data.stock) ? item.data.stock : 0;
-                    itemSearch.code.web = item.data.cod_producto;
+                    itemSearch.stock = (item.data.stock) ? item.data.stock : 1;
+                    itemSearch.code.web = item.data.cod;
                     // itemSearch.mercadolibre = item.mercadolibre;
                     itemSearch.price.default = item.data.precio;
-                    itemSearch.category = removeSpecialChars(item.category.data.titulo);
-                    itemSearch.subcategory = removeSpecialChars(item.subcategory.data.titulo);
+                    itemSearch.category = item.category.data.titulo;
+                    itemSearch.subcategory = item.subcategory.data.titulo;
                     item.images.forEach(img => {
                         images.push({ "source": img.ruta, "order": img.orden })
                     });
@@ -34,15 +34,15 @@ exports.updateProductsWithWeb = async (link) => {
                     data.code = {};
                     data.price = {};
                     const images = [];
-                    data.title = removeSpecialChars(item.data.titulo);
+                    data.title = item.data.titulo;
                     data.description.text = item.data.desarrollo;
                     data.description.video = (data.description.video) ? data.description.video : process.env.VIDEO_ITEM;
-                    data.stock = (item.data.stock) ? item.data.stock : 0;
-                    data.code.web = item.data.cod_producto;
+                    data.stock = (item.data.stock) ? item.data.stock : 1;
+                    data.code.web = item.data.cod;
                     // data.mercadolibre = item.mercadolibre;
                     data.price.default = item.data.precio;
-                    data.category = removeSpecialChars(item.category.data.titulo);
-                    data.subcategory = removeSpecialChars(item.subcategory.data.titulo);
+                    data.category = item.category.data.titulo;
+                    data.subcategory = item.subcategory.data.titulo;
                     item.images.forEach(img => {
                         images.push({ "source": img.ruta, "order": img.orden })
                     });
@@ -59,18 +59,18 @@ exports.updateProductsWithWeb = async (link) => {
 
 exports.updateWeb = async (item) => {
     this.setStock(0);
-    var itemSearch = (item.data.cod_producto) ? await this.view(item.data.cod_producto) : false;
+    var itemSearch = (item.data.cod) ? await this.view(item.data.cod) : false;
     if (itemSearch) {
         const images = [];
-        itemSearch.title = removeSpecialChars(item.data.titulo);
+        itemSearch.title = item.data.titulo;
         itemSearch.description.text = item.data.desarrollo;
         itemSearch.description.video = (item.data.video) ? item.data.video : process.env.VIDEO_ITEM;
-        itemSearch.stock = (item.data.stock) ? item.data.stock : 0;
-        itemSearch.code.web = item.data.cod_producto;
+        itemSearch.stock = (item.data.stock) ? item.data.stock : 1;
+        itemSearch.code.web = item.data.cod;
         // itemSearch.mercadolibre = item.mercadolibre;
         itemSearch.price.default = item.data.precio;
-        itemSearch.category = removeSpecialChars(item.category.data.titulo);
-        itemSearch.subcategory = removeSpecialChars(item.subcategory.data.titulo);
+        itemSearch.category = item.category.data.titulo;
+        itemSearch.subcategory = item.subcategory.data.titulo;
         item.images.forEach(img => {
             images.push({ "source": img.ruta, "order": img.orden })
         });
@@ -86,15 +86,15 @@ exports.updateWeb = async (item) => {
         data.code = {};
         data.price = {};
         const images = [];
-        data.title = removeSpecialChars(item.data.titulo);
+        data.title = item.data.titulo;
         data.description.text = item.data.desarrollo;
         data.description.video = (data.description.video) ? data.description.video : process.env.VIDEO_ITEM;
-        data.stock = (item.data.stock) ? item.data.stock : 0;
-        data.code.web = item.data.cod_producto;
+        data.stock = (item.data.stock) ? item.data.stock : 1;
+        data.code.web = item.data.cod;
         // data.mercadolibre = item.mercadolibre;
         data.price.default = item.data.precio;
-        data.category = removeSpecialChars(item.category.data.titulo);
-        data.subcategory = removeSpecialChars(item.subcategory.data.titulo);
+        data.category = item.category.data.titulo;
+        data.subcategory = item.subcategory.data.titulo;
         item.images.forEach(img => {
             images.push({ "source": img.ruta, "order": img.orden })
         });
@@ -111,6 +111,7 @@ exports.list = async () => {
     return ProductsModel.find();
     //return ProductsModel.find().limit(100);
 }
+
 
 exports.create = (item) => {
     var data = new ProductsModel(item);
