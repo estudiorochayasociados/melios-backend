@@ -16,7 +16,7 @@ exports.updateProductsWithWeb = async (link) => {
                     itemSearch.title = item.data.titulo;
                     itemSearch.description.text = item.data.desarrollo;
                     itemSearch.description.video = (item.data.video) ? item.data.video : process.env.VIDEO_ITEM;
-                    itemSearch.stock = (item.data.stock) ? item.data.stock : 0;
+                    itemSearch.stock = (item.data.stock) ? item.data.stock : 1;
                     itemSearch.code.web = item.data.cod;
                     // itemSearch.mercadolibre = item.mercadolibre;
                     itemSearch.price.default = item.data.precio;
@@ -37,7 +37,7 @@ exports.updateProductsWithWeb = async (link) => {
                     data.title = item.data.titulo;
                     data.description.text = item.data.desarrollo;
                     data.description.video = (data.description.video) ? data.description.video : process.env.VIDEO_ITEM;
-                    data.stock = (item.data.stock) ? item.data.stock : 0;
+                    data.stock = (item.data.stock) ? item.data.stock : 1;
                     data.code.web = item.data.cod;
                     // data.mercadolibre = item.mercadolibre;
                     data.price.default = item.data.precio;
@@ -65,7 +65,7 @@ exports.updateWeb = async (item) => {
         itemSearch.title = item.data.titulo;
         itemSearch.description.text = item.data.desarrollo;
         itemSearch.description.video = (item.data.video) ? item.data.video : process.env.VIDEO_ITEM;
-        itemSearch.stock = (item.data.stock) ? item.data.stock : 0;
+        itemSearch.stock = (item.data.stock) ? item.data.stock : 1;
         itemSearch.code.web = item.data.cod;
         // itemSearch.mercadolibre = item.mercadolibre;
         itemSearch.price.default = item.data.precio;
@@ -89,7 +89,7 @@ exports.updateWeb = async (item) => {
         data.title = item.data.titulo;
         data.description.text = item.data.desarrollo;
         data.description.video = (data.description.video) ? data.description.video : process.env.VIDEO_ITEM;
-        data.stock = (item.data.stock) ? item.data.stock : 0;
+        data.stock = (item.data.stock) ? item.data.stock : 1;
         data.code.web = item.data.cod;
         // data.mercadolibre = item.mercadolibre;
         data.price.default = item.data.precio;
