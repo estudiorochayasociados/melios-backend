@@ -10,7 +10,7 @@ exports.updateProductsWithWeb = async (link) => {
     return axios.get(link)
         .then(async r => {
             for await (const item of r.data) {
-                var itemSearch = await this.view(item.data.cod);
+                var itemSearch = await this.view(item.data.cod_producto);
                 if (itemSearch) {
                     const images = [];
                     itemSearch.title = item.data.titulo;
@@ -38,7 +38,7 @@ exports.updateProductsWithWeb = async (link) => {
                     data.description.text = item.data.desarrollo;
                     data.description.video = (data.description.video) ? data.description.video : process.env.VIDEO_ITEM;
                     data.stock = (item.data.stock) ? item.data.stock : 0;
-                    data.code.web = item.data.cod;
+                    data.code.web = item.data.cod_producto;
                     // data.mercadolibre = item.mercadolibre;
                     data.price.default = item.data.precio;
                     data.category = item.category.data.titulo;
@@ -59,7 +59,7 @@ exports.updateProductsWithWeb = async (link) => {
 
 exports.updateWeb = async (item) => {
     this.setStock(0);
-    var itemSearch = (item.data.cod) ? await this.view(item.data.cod) : false;
+    var itemSearch = (item.data.cod) ? await this.view(item.data.cod_producto) : false;
     if (itemSearch) {
         const images = [];
         itemSearch.title = item.data.titulo;
@@ -90,7 +90,7 @@ exports.updateWeb = async (item) => {
         data.description.text = item.data.desarrollo;
         data.description.video = (data.description.video) ? data.description.video : process.env.VIDEO_ITEM;
         data.stock = (item.data.stock) ? item.data.stock : 0;
-        data.code.web = item.data.cod;
+        data.code.web = item.data.cod_producto;
         // data.mercadolibre = item.mercadolibre;
         data.price.default = item.data.precio;
         data.category = item.category.data.titulo;
