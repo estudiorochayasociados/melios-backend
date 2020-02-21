@@ -59,7 +59,7 @@ exports.updateProductsWithWeb = async (link) => {
 
 exports.updateWeb = async (item) => {
     this.setStock(0);
-    var itemSearch = (item.data.cod) ? await this.view(item.data.cod_producto) : false;
+    var itemSearch = (item.data.cod_producto) ? await this.view(item.data.cod_producto) : false;
     if (itemSearch) {
         const images = [];
         itemSearch.title = item.data.titulo;
