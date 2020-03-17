@@ -21,9 +21,11 @@ router.get('/products-set-meli', async (req, res) => {
             meli.push(element.mercadolibre[gold_pro]);
         }
         if (element.mercadolibre[gold_special] != undefined) {
+            element.mercadolibre[gold_special].type = "gold_special";
             meli.push(element.mercadolibre[gold_special]);
         }
         element.mercadolibre = meli;
+        //console.log(element);
         ProductController.update(element);
     });
 })
@@ -53,4 +55,6 @@ router.put("/", Middelware.checkToken, async (req, res) => {
     const get = await ProductController.update(req.body);
     res.status(200).send({ get });
 })
+
+
 module.exports = router;

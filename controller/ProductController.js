@@ -17,11 +17,11 @@ exports.updateProductsWithWeb = async (link) => {
                     itemSearch.description.text = item.data.desarrollo;
                     itemSearch.description.video = (item.data.video) ? item.data.video : process.env.VIDEO_ITEM;
                     itemSearch.stock = (item.data.stock) ? item.data.stock : 0;
-                    itemSearch.code.web = item.data.cod;
+                    itemSearch.code.web = item.data.cod_producto;
                     // itemSearch.mercadolibre = item.mercadolibre;
                     itemSearch.price.default = item.data.precio;
                     itemSearch.category = item.category.data.titulo;
-                    itemSearch.subcategory = item.subcategory.data.titulo;
+                    itemSearch.subcategory = "";
                     item.images.forEach(img => {
                         images.push({ "source": img.ruta, "order": img.orden })
                     });
@@ -38,11 +38,11 @@ exports.updateProductsWithWeb = async (link) => {
                     data.description.text = item.data.desarrollo;
                     data.description.video = (data.description.video) ? data.description.video : process.env.VIDEO_ITEM;
                     data.stock = (item.data.stock) ? item.data.stock : 0;
-                    data.code.web = item.data.cod;
+                    data.code.web = item.data.cod_producto;
                     // data.mercadolibre = item.mercadolibre;
                     data.price.default = item.data.precio;
                     data.category = item.category.data.titulo;
-                    data.subcategory = item.subcategory.data.titulo;
+                    data.subcategory = "";
                     item.images.forEach(img => {
                         images.push({ "source": img.ruta, "order": img.orden })
                     });
@@ -59,18 +59,19 @@ exports.updateProductsWithWeb = async (link) => {
 
 exports.updateWeb = async (item) => {
     this.setStock(0);
-    var itemSearch = (item.data.cod) ? await this.view(item.data.cod) : false;
+    var itemSearch = (item.data.cod_producto) ? await this.view(item.data.cod_producto) : false;
+
     if (itemSearch) {
         const images = [];
         itemSearch.title = item.data.titulo;
         itemSearch.description.text = item.data.desarrollo;
         itemSearch.description.video = (item.data.video) ? item.data.video : process.env.VIDEO_ITEM;
         itemSearch.stock = (item.data.stock) ? item.data.stock : 0;
-        itemSearch.code.web = item.data.cod;
+        itemSearch.code.web = item.data.cod_producto;
         // itemSearch.mercadolibre = item.mercadolibre;
         itemSearch.price.default = item.data.precio;
         itemSearch.category = item.category.data.titulo;
-        itemSearch.subcategory = item.subcategory.data.titulo;
+        itemSearch.subcategory = "a";
         item.images.forEach(img => {
             images.push({ "source": img.ruta, "order": img.orden })
         });
@@ -90,11 +91,11 @@ exports.updateWeb = async (item) => {
         data.description.text = item.data.desarrollo;
         data.description.video = (data.description.video) ? data.description.video : process.env.VIDEO_ITEM;
         data.stock = (item.data.stock) ? item.data.stock : 0;
-        data.code.web = item.data.cod;
+        data.code.web = item.data.cod_producto;
         // data.mercadolibre = item.mercadolibre;
         data.price.default = item.data.precio;
         data.category = item.category.data.titulo;
-        data.subcategory = item.subcategory.data.titulo;
+        data.subcategory = "";
         item.images.forEach(img => {
             images.push({ "source": img.ruta, "order": img.orden })
         });
