@@ -93,12 +93,12 @@ exports.getGarantyCategory = async (cod, garanty) => {
 exports.getShippingDimension = async (categorie) => {
     return await axios.get("https://api.mercadolibre.com/categories/" + categorie + "/shipping_preferences")
         .then(r => {
-            if (r.data.dimensions != null) {
+            if (r.data.dimensions.width != null) {
                 dimensions = r.data.dimensions.height + "x" + r.data.dimensions.width + "x" + r.data.dimensions.length + "," + r.data.dimensions.weight;
             } else {
                 dimensions = 0;
             }
-            return Number(dimensions);
+            return dimensions;
         })
         .catch(e => {
             console.log(e.response);
@@ -110,7 +110,8 @@ exports.getShippingDimension = async (categorie) => {
 exports.shippingPriceByDimension = async (dimension) => {
     return await axios.get("https://api.mercadolibre.com/sites/MLA/shipping_options?zip_code_from=2400&zip_code_to=1001&dimensions=" + dimensions)
         .then(r => {
-            price = r["data"]["options"]["0"]["list_cost"] + 100;
+            console.log(r);
+            price = r["data"]["options"]["1"]["cost"];
             return price;
         })
         .catch(e => {
@@ -168,19 +169,24 @@ exports.editItem = async (itemId, data, addShipping, percentPrice, type, token) 
     //PREDICCION DE LA CATEGORIA VIA TITULO
     const category = await this.getPredictionCategory(data.title + data.category + data.subcategory);
     //const garantyDays = Number((garanty != 0) ? await this.getGarantyCategory(category.id, garanty) : 0);
+    var precioFinal = ((data.price.default * (percentPrice / 100) + data.price.default)).toFixed(2);
 
-    //CALCULAR PRECIO ME2 X CATEGORIA
-    var shipping = (addShipping === true && (category.dimensions !== null && category.dimensions !== undefined && category.dimensions !== 0)) ? await this.shippingPriceByDimension(category.dimensions) : 0;
+    if (precioFinal >= 2500) {
+        var shipping = (addShipping === true && (category.dimensions !== null && category.dimensions !== undefined && category.dimensions !== 0)) ? await this.shippingPriceByDimension(category.dimensions) : 0;
+    } else {
+        var shipping = 0;
+    }
+
     if (!data.stock) {
         await this.changeState(itemId, 'paused', token);
-        return ({ status: 200, title: data.title, error: { message: "Anuncio pausado por bajo stock" } });
+        return ({ status: 200, title: data.title, error: { message: "Anuncio pausado por stock 0" } });
     } else {
-        await this.changeState(itemId, 'active', token);
+        // await this.changeState(itemId, 'active', token);
         //CREATE OBJETO MELI
         const itemMeli = {};
         itemMeli.title = data.title;
         itemMeli.available_quantity = data.stock;
-        itemMeli.price = ((data.price.default * (percentPrice / 100) + data.price.default) + shipping).toFixed(2);
+        itemMeli.price = (parseFloat(precioFinal) + parseFloat(shipping)).toFixed(2);
         itemMeli.video_id = data.description.video;
         itemMeli.pictures = [];
         // itemMeli.attributes = [];
@@ -190,8 +196,7 @@ exports.editItem = async (itemId, data, addShipping, percentPrice, type, token) 
         });
 
         //CREATE OBJETO MELI
-        const descriptionMeli = {};
-        descriptionMeli.plain_text = data.description.text;
+        const descriptionMeli = { plain_text: data.description.text };
 
         // SET MANUFACTURING_TIME
         // if (garantyDays != 0) {
@@ -209,7 +214,7 @@ exports.editItem = async (itemId, data, addShipping, percentPrice, type, token) 
             await findMongoDb.mercadolibre.splice(indexMeliObject, 1);
             await findMongoDb.mercadolibre.push({ type: type, shipping: addShipping, code: itemId, price: itemMeli.price, percent: percentPrice });
             await findMongoDb.save();
-            return ({ status: 200, title: data.title, type: type, shipping: addShipping, code: itemPost.data.id, price: itemMeli.price, percent: percentPrice });
+            return ({ status: 200, title: data.title, type: type, shipping: addShipping, code: itemPost.data.id, realPrice: data.price.default, price: itemMeli.price, priceShipping: shipping, percent: percentPrice });
         }
         catch (e) {
             return ({ status: 400, title: data.title, error: e.response.data });

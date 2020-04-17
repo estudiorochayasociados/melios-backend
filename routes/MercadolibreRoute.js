@@ -19,9 +19,7 @@ router.get("/login", async function (req, res) {
 });
 
 router.get("/refresh-token", async (req, res) => {
-    const token = await TokenController.view(process.env.USER_ID); //get token mongodb
-    console.log(process.env.USER_ID);
-    console.log(token);
+    const token = await TokenController.view(process.env.USER_ID); //get token mongodb 
     const reAuth = await MercadolibreController.checkToken(token.access_token);
     if (reAuth) {
         res.json(reAuth)

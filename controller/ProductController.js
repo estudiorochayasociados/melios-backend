@@ -14,7 +14,7 @@ exports.updateProductsWithWeb = async (link) => {
                 if (itemSearch) {
                     const images = [];
                     itemSearch.title = item.data.titulo;
-                    itemSearch.description.text = item.data.desarrollo;
+                    itemSearch.description.text = "" + item.data.desarrollo + "";
                     itemSearch.description.video = (item.data.video) ? item.data.video : process.env.VIDEO_ITEM;
                     itemSearch.stock = (item.data.stock) ? item.data.stock : 0;
                     itemSearch.code.web = item.data.cod_producto;
@@ -35,7 +35,7 @@ exports.updateProductsWithWeb = async (link) => {
                     data.price = {};
                     const images = [];
                     data.title = item.data.titulo;
-                    data.description.text = item.data.desarrollo;
+                    data.description.text = "" + item.data.desarrollo + "";
                     data.description.video = (data.description.video) ? data.description.video : process.env.VIDEO_ITEM;
                     data.stock = (item.data.stock) ? item.data.stock : 0;
                     data.code.web = item.data.cod_producto;
@@ -60,11 +60,11 @@ exports.updateProductsWithWeb = async (link) => {
 exports.updateWeb = async (item) => {
     this.setStock(0);
     var itemSearch = (item.data.cod_producto) ? await this.view(item.data.cod_producto) : false;
-
+    var description = item.data.titulo + ' \n _________________ \nAIMAR REPUESTOS \nDistribuidora líder en venta de repuestos de freno y embrague\n \n Realizamos factura A y B. \n *En caso de necesitar factura tipo A indicar el número de CUIT en el momento de la compra. No se realizan modificaciones posteriores.\n \n Estamos en San Francisco, Córdoba \n Si desea que el envío se realice por algún transporte especifico tilde la opción de “retiro en sucursal” para poder coordinar con nosotros el despacho de su compra \n HORARIO: Lunes a viernes de 8hs a 16hs \n \n Respondemos todas tus dudas y/o consultas!';
     if (itemSearch) {
         const images = [];
         itemSearch.title = item.data.titulo;
-        itemSearch.description.text = item.data.desarrollo;
+        itemSearch.description.text = description;
         itemSearch.description.video = (item.data.video) ? item.data.video : process.env.VIDEO_ITEM;
         itemSearch.stock = (item.data.stock) ? item.data.stock : 0;
         itemSearch.code.web = item.data.cod_producto;
@@ -88,7 +88,7 @@ exports.updateWeb = async (item) => {
         data.price = {};
         const images = [];
         data.title = item.data.titulo;
-        data.description.text = item.data.desarrollo;
+        data.description.text = description;
         data.description.video = (data.description.video) ? data.description.video : process.env.VIDEO_ITEM;
         data.stock = (item.data.stock) ? item.data.stock : 0;
         data.code.web = item.data.cod_producto;
