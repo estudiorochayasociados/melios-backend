@@ -124,7 +124,13 @@ exports.addItem = async (data, addShipping, percentPrice, type, garanty, token) 
     const category = await this.getPredictionCategory(data.title + data.category + data.subcategory);
     const garantyDays = Number((garanty != 0) ? await this.getGarantyCategory(category.id, garanty) : 0);
     //CALCULAR PRECIO ME2 X CATEGORIA
-    var shipping = (addShipping === true && (category.dimensions !== null && category.dimensions !== undefined && category.dimensions !== 0)) ? await this.shippingPriceByDimension(category.dimensions) : 0;
+    var precioFinal = ((data.price.default * (percentPrice / 100) + data.price.default)).toFixed(2);
+
+    if (precioFinal >= 2500 || type == "gold_pro") {
+        var shipping = (addShipping === true && (category.dimensions !== null && category.dimensions !== undefined && category.dimensions !== 0)) ? await this.shippingPriceByDimension(category.dimensions) : 0;
+    } else {
+        var shipping = 0;
+    }
 
     //CREATE OBJETO MELI
     const itemMeli = {};
@@ -171,7 +177,7 @@ exports.editItem = async (itemId, data, addShipping, percentPrice, type, token) 
     //const garantyDays = Number((garanty != 0) ? await this.getGarantyCategory(category.id, garanty) : 0);
     var precioFinal = ((data.price.default * (percentPrice / 100) + data.price.default)).toFixed(2);
 
-    if (precioFinal >= 2500) {
+    if (precioFinal >= 2500 || type == "gold_pro") {
         var shipping = (addShipping === true && (category.dimensions !== null && category.dimensions !== undefined && category.dimensions !== 0)) ? await this.shippingPriceByDimension(category.dimensions) : 0;
     } else {
         var shipping = 0;
