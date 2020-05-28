@@ -75,6 +75,7 @@ exports.updateWeb = async (item) => {
         item.images.forEach(img => {
             images.push({ "source": img.ruta, "order": img.orden })
         });
+        console.log("update: " + itemSearch)
         itemSearch.images = images;
         if (this.update(itemSearch)) {
             return ({ status: 200, type: "update", title: item.data.titulo });
@@ -82,6 +83,7 @@ exports.updateWeb = async (item) => {
             return ({ status: 500, type: "update", title: item.data.titulo });
         }
     } else {
+
         const data = {};
         data.description = {};
         data.code = {};
@@ -100,7 +102,9 @@ exports.updateWeb = async (item) => {
             images.push({ "source": img.ruta, "order": img.orden })
         });
         data.images = images;
-        if (this.create(itemSearch)) {
+
+        console.log("create: " + data)
+        if (this.create(data)) {
             return ({ status: 200, type: "create", title: item.data.titulo });
         } else {
             return ({ status: 500, type: "create", title: item.data.titulo });

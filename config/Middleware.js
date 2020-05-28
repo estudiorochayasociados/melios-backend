@@ -6,7 +6,7 @@ exports.refreshToken = (async () => {
     await axios.get(process.env.URL + "/mercadolibre/refresh-token").then(r => { console.log(r.data) });
 });
 
-exports.checkToken = ((req, res, next) => { 
+exports.checkToken = ((req, res, next) => {
     const token = req.headers['access-token'];
     if (token) {
         jwt.verify(token, process.env.JWT, (err, decoded) => {
@@ -23,6 +23,6 @@ exports.checkToken = ((req, res, next) => {
     }
 });
 
-cron.schedule("* 45 * * * *", async () => {
+cron.schedule("0 */10 * * * *", async () => {
     await this.refreshToken();
 });

@@ -139,7 +139,7 @@ exports.addItem = async (data, addShipping, percentPrice, type, garanty, token) 
     itemMeli.available_quantity = (data.stock) ? data.stock : 1;
     itemMeli.buying_mode = "buy_it_now";
     itemMeli.condition = "new";
-    itemMeli.price = ((data.price.default * (percentPrice / 100) + data.price.default) + shipping).toFixed(2);
+    itemMeli.price = (parseFloat(precioFinal) + parseFloat(shipping)).toFixed(2);
     itemMeli.description = { plain_text: data.description.text };
     itemMeli.pictures = [];
     // itemMeli.attributes = [];
@@ -194,12 +194,12 @@ exports.editItem = async (itemId, data, addShipping, percentPrice, type, token) 
         itemMeli.available_quantity = data.stock;
         itemMeli.price = (parseFloat(precioFinal) + parseFloat(shipping)).toFixed(2);
         itemMeli.video_id = data.description.video;
-        itemMeli.pictures = [];
+        //itemMeli.pictures = [];
         // itemMeli.attributes = [];
         // itemMeli.attributes.push({ "id": "EAN", "name": "EAN", "value_id": null, "value_name": "7794940000796" });
-        data.images.forEach(img => {
-            itemMeli.pictures.push({ source: img.source });
-        });
+        // data.images.forEach(img => {
+        //     itemMeli.pictures.push({ source: img.source });
+        // });
 
         //CREATE OBJETO MELI
         const descriptionMeli = { plain_text: data.description.text };
