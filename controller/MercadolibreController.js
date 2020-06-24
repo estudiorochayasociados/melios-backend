@@ -190,7 +190,7 @@ exports.editItem = async (itemId, data, addShipping, percentPrice, type, token) 
         // await this.changeState(itemId, 'active', token);
         //CREATE OBJETO MELI
         const itemMeli = {};
-        itemMeli.title = data.title;
+        // itemMeli.title = data.title;
         itemMeli.available_quantity = data.stock;
         itemMeli.price = (parseFloat(precioFinal) + parseFloat(shipping)).toFixed(2);
         itemMeli.video_id = data.description.video;
@@ -202,7 +202,7 @@ exports.editItem = async (itemId, data, addShipping, percentPrice, type, token) 
         // });
 
         //CREATE OBJETO MELI
-        const descriptionMeli = { plain_text: data.description.text };
+        // const descriptionMeli = { plain_text: data.description.text };
 
         // SET MANUFACTURING_TIME
         // if (garantyDays != 0) {
