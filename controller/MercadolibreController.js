@@ -214,7 +214,7 @@ exports.editItem = async (itemId, data, addShipping, percentPrice, type, token) 
 
         try {
             const itemPost = await axios.put("https://api.mercadolibre.com/items/" + itemId + "?access_token=" + token, itemMeli);
-            const descriptionPost = await axios.put("https://api.mercadolibre.com/items/" + itemId + "/description?access_token=" + token, descriptionMeli);
+            // const descriptionPost = await axios.put("https://api.mercadolibre.com/items/" + itemId + "/description?access_token=" + token, descriptionMeli);
             const findMongoDb = await ProductsModel.findOne({ "code.web": data.code.web });
             indexMeliObject = await findMongoDb.mercadolibre.findIndex(x => x.code === itemId);
             await findMongoDb.mercadolibre.splice(indexMeliObject, 1);
